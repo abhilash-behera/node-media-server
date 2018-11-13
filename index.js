@@ -48,7 +48,7 @@ app.get('/listFetchedMovies',function(req,res){
 
 app.post('/createMovie',function(req,res){
   const movieUrl=req.body.moviePath;
-  const idbmId=req.body.idbmId;
+  const imdbId=req.body.imdbId;
   request.get('http://www.omdbapi.com/?i='+imdbId+'&apikey=7c6f180b',{json:true},function(err,res,body){
     if(err){
       console.log('error in getting request data from IMDB: ',err);
