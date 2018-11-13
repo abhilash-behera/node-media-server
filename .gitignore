@@ -8,7 +8,7 @@
 
 # dependencies
 /node_modules
-/data
+/data/
 
 # IDEs and editors
 /.idea
