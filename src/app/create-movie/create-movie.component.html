@@ -1,0 +1,31 @@
+<h1 style="width:100%;text-align: center;margin-top: 30px"><strong>AV</strong> developers media server</h1>
+<div class="container">
+  <mat-card class="col-lg-6" style="margin:auto">
+    <mat-card-header style="background-color:#ddffff;border-left:6px solid #2196F3">
+      <mat-card-title>
+        <h2>Create Movie</h2>
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <form style="width:100%; padding-top:40px" [formGroup]="createMovieForm">
+
+        <mat-form-field style="width:100%">
+          <mat-select placeholder="-- Select Movie Path --" formControlName="path">
+            <mat-option *ngFor="let moviePath of moviePaths" [value]="moviePath">
+              {{moviePath}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field style="width:100%">
+          <input type="text" matInput placeholder="IMDB id" autocomplete="off" formControlName="imdbId">
+        </mat-form-field>
+
+        {{createMovieForm.value | json}}
+        <div style="width:100%;border: 3px ridge gray">
+          <ngx-json-viewer [json]="someObject" [expanded]="false"></ngx-json-viewer>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>
