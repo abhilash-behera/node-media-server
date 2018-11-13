@@ -29,6 +29,7 @@
     "hammerjs": "^2.0.8",
     "mongoose": "^5.3.11",
     "ngx-json-viewer": "^2.4.0",
+    "request": "^2.88.0",
     "rxjs": "^6.0.0",
     "zone.js": "^0.8.26"
   },
