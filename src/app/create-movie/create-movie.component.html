@@ -25,11 +25,11 @@
           </div>
 
           <div class="col-lg-2 col-md-2 col-sm-2">
-            <button mat-raised-button style="background-color: var(--green)" (click)="getImdbData()" 
-            [disabled]="checkButtonDisabled" type="button">Check</button>
+            <button mat-raised-button style="background-color: var(--green)" (click)="getImdbData()" [disabled]="checkButtonDisabled"
+              type="button">Check</button>
           </div>
         </div>
-        
+
         <div style="width:100%;border: 2px ridge gray;background-color: #f9f9f9">
           <ngx-json-viewer [json]="imdbObject" [expanded]="false"></ngx-json-viewer>
         </div>
