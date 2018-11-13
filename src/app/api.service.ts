@@ -24,6 +24,10 @@ export class ApiService {
     return this.httpClient.get('/listUnFetchedMovies').pipe(catchError(this.errorHandler));
   }
 
+  getImdbData(imdbId:string){
+    return this.httpClient.get('http://www.omdbapi.com/?i='+imdbId+'&apikey=7c6f180b').pipe(catchError(this.errorHandler));
+  }
+
   errorHandler(errorResponse: HttpErrorResponse) {
     return throwError(errorResponse);
   }

@@ -11,7 +11,8 @@ import {MatSnackBar} from '@angular/material/snack-bar';
 export class CreateMovieComponent implements OnInit {
   createMovieForm:FormGroup;
   moviePaths:String[]=[];
-  someObject:any={name:'Abhilash Behera',age:22,gender:'male'};
+  imdbObject:any={data:'Click check and verify the data here'};
+  checkButtonDisabled:boolean=false;
   constructor(
     private formBuilder:FormBuilder,
     private apiService:ApiService,
@@ -41,17 +42,45 @@ export class CreateMovieComponent implements OnInit {
   }
 
   createMovie(){
-    if(this.createMovieForm){
+    const path=this.createMovieForm.value.path;
+    const imdbId=this.createMovieForm.value.imdbId;
 
-    }else{
-      this.apiService.createMovie('','').subscribe(
+    if(path&&imdbId){
+      console.log('Creating movie');
+      this.apiService.createMovie(path,imdbId).subscribe(
         data=>{
-          console.log('Create movie response');
+          const d=Object(data);
+          console.log('Create movie response:',d.data.data);
         },
         error=>{
           console.log('Error in creating movie: ',error);
+          this.matSnackBar.open('Something went wrong. Please try again.','Okay',{duration:5000});
         }
       );
+    }else{
+      console.log('Please fill up the form first');
+      this.matSnackBar.open('Please fill all the details first','Okay',{duration:5000});
+    }
+  }
+
+  getImdbData(){
+    if(this.createMovieForm.value.imdbId){
+      this.checkButtonDisabled=true;
+      this.apiService.getImdbData(this.createMovieForm.value.imdbId).subscribe(
+        data=>{
+          console.log('Got data from omdb');
+          this.imdbObject=Object(data);
+          this.checkButtonDisabled=false;
+        },
+        error=>{
+          console.log('Error in fetching data from omdb: ',error);
+          this.checkButtonDisabled=false;
+          this.matSnackBar.open('Something went wrong. Please try again.','Okay',{duration:5000});
+        }
+      )
+    }else{
+      console.log('ImdbId not entered');
+      this.matSnackBar.open('Enter IMDB Id and try again','Okay',{duration:5000});
     }
   }
 

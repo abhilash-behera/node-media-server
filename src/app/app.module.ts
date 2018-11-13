@@ -14,7 +14,8 @@ import { CreateMovieComponent } from './create-movie/create-movie.component';
 import {ApiService} from './api.service';
 
 // Material Design
-import { MatCardModule, MatFormFieldModule, MatInputModule, MatSelectModule, MatSnackBarModule } from '@angular/material';
+import { MatCardModule, MatFormFieldModule, MatInputModule, MatSelectModule, 
+  MatSnackBarModule, MatButtonModule } from '@angular/material';
 
 // Other External Libraries
 import { NgxJsonViewerModule } from 'ngx-json-viewer';
@@ -42,7 +43,8 @@ const routes: Route[] = [
     NgxJsonViewerModule,
     MatSelectModule,
     HttpClientModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatButtonModule
   ],
   providers: [ApiService],
   bootstrap: [AppComponent]
