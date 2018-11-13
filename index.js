@@ -5,6 +5,7 @@ var mongoose = require('mongoose');
 mongoose.Promise = require('bluebird');
 var bodyParser = require('body-parser');
 var request=require('request');
+var mongoose=require('mongoose');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -46,7 +47,7 @@ app.get('/listFetchedMovies',function(req,res){
 });
 
 app.post('/createMovie',function(req,res){
-  const movieUrl=req.body.movieUrl;
+  const movieUrl=req.body.moviePath;
   const idbmId=req.body.idbmId;
   request.get('http://www.omdbapi.com/?i='+imdbId+'&apikey=7c6f180b',{json:true},function(err,res,body){
     if(err){
