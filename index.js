@@ -10,6 +10,27 @@ var mongoose=require('mongoose');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(__dirname + '/dist/node-media-server'));
+
+var Schema=mongoose.Schema;
+
+var movieSchema=new Schema({
+  path:{
+    type:String,
+    required:true
+  },
+  details:{
+    type:Object
+  }
+});
+
+var Movie=mongoose.model("Movie", movieSchema);
+mongoose.connect('mongodb://localhost/Movie',function(err){
+  if(err){
+    console.log('error in connecting Database',err);
+  }else{
+    console.log('database connected successfully');
+  }
+});
 app.get('/listUnFetchedMovies', function (req, res) {
   console.log('Requesting unfetched movies list');
   fs.readdir(__dirname + '/movies', function (err, moviesList) {
@@ -48,7 +69,7 @@ app.get('/listFetchedMovies',function(req,res){
 
 app.post('/createMovie',function(req,res){
   const movieUrl=req.body.moviePath;
-  const idbmId=req.body.idbmId;
+  const imdbId=req.body.imdbId;
   request.get('http://www.omdbapi.com/?i='+imdbId+'&apikey=7c6f180b',{json:true},function(err,res,body){
     if(err){
       console.log('error in getting request data from IMDB: ',err);
@@ -56,19 +77,46 @@ app.post('/createMovie',function(req,res){
     }else{
       console.log(body.url);
       console.log(body.explanation);
-       res.json({success:true,data:{msg:'Successful',data:body.explanation}});
+      res.json({success:true,data:{msg:'Successful',data:body.explanation}});
+      const movie=new Movie({
+        path:req.body.moviePath,
+        details:req.body.imdbId
+      });
+      movie.save(function(err){
+        if(err){
+          console.log('something went wrong: ',err);
+          res.json({success:false,data:{msg:'something went wrong'}});
+        }else{
+          console.log('movie successfully created');
+           res.json({success:true,data:{msg:'movie created successfully'}});
+        }
+      });
+
     }
   });
 });
 
 app.get('/moviesList', function (req, res) {
   console.log('Requesting movies list...');
-  fs.readdir(__dirname + '/movies', function (err, moviesList) {
-    if (err) {
-      console.log('Error in fetching movies list: ', err);
-      res.json({ success: false, data: 'Error in fetching movies list' });
-    } else {
-      res.json({ success: true, data: { msg: 'Movies list fetched successfully', data: moviesList } });
+  // fs.readdir(__dirname + '/movies', function (err, moviesList) {
+  //   if (err) {
+  //     console.log('Error in fetching movies list: ', err);
+  //     res.json({ success: false, data: 'Error in fetching movies list' });
+  //   } else {
+  //     res.json({ success: true, data: { msg: 'Movies list fetched successfully', data: moviesList } });
+  //   }
+  // });
+
+  Movies.find({},function(err,movies){
+    if(err){
+      console.log('could not fetch movie from database',err);
+      return res.json({success:false,data:{msg:"error in connecting database"}});
+    }else if(!movies){
+      console.log('movies not found in database');
+      return  res.json({success:false,data:{msg:'no movie found in database'}});
+    }else{
+      console.log('movies list found in database');
+      return  res.json({success:true,data:{msg:"here is movie list",data:movies}});
     }
   });
 });
