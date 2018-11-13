@@ -79,8 +79,8 @@ app.post('/createMovie',function(req,res){
       console.log(body.explanation);
       res.json({success:true,data:{msg:'Successful',data:body.explanation}});
       const movie=new Movie({
-        path:req.body.moviePath,
-        details:req.body.imdbId
+        path:req.body.path,
+        details:response.body
       });
       movie.save(function(err){
         if(err){
