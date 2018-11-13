@@ -47,16 +47,15 @@ app.get('/listFetchedMovies',function(req,res){
 });
 
 app.post('/createMovie',function(req,res){
-  const movieUrl=req.body.moviePath;
+  const path=req.body.path;
   const imdbId=req.body.imdbId;
-  request.get('http://www.omdbapi.com/?i='+imdbId+'&apikey=7c6f180b',{json:true},function(err,res,body){
+  request.get('http://www.omdbapi.com/?i='+imdbId+'&apikey=7c6f180b',{json:true},function(err,response,body){
     if(err){
       console.log('error in getting request data from IMDB: ',err);
       res.json({success:false,data:{msg:'request for IMDB could not respond'}});
     }else{
-      console.log(body.url);
-      console.log(body.explanation);
-       res.json({success:true,data:{msg:'Successful',data:body.explanation}});
+      console.log('imdb res: ',response.body);
+       res.json({success:true,data:{msg:'Successful',data:response.body}});
     }
   });
 });
